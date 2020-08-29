@@ -5,10 +5,6 @@ resource "null_resource" "wait-tiller-ready" {
   provisioner "local-exec" {
     working_dir = path.cwd
     command     = <<EOS
-until helm ls; do
-  echo "Wait tiller ready"
-  sleep 5
-done
 EOS
     environment = {
       KUBECONFIG = var.kubeconfig_filename

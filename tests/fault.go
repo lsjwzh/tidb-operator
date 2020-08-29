@@ -592,25 +592,11 @@ func getFaultNode(kubeCli kubernetes.Interface) (string, error) {
 		return "", fmt.Errorf("the number of nodes cannot be less than 1")
 	}
 
-	listOption := metav1.ListOptions{
-		LabelSelector: labels.SelectorFromSet(map[string]string{
-			"app":  "helm",
-			"name": "tiller",
-		}).String(),
-	}
-	pods, err := kubeCli.CoreV1().Pods("kube-system").List(listOption)
-	if err != nil {
-		return "", err
-	}
-	if len(pods.Items) < 1 {
-		return "", fmt.Errorf("failed to get tiller pods")
-	}
-	tillerNodeName := pods.Items[0].Spec.NodeName
 	myNode := getMyNodeName()
 
 	var filterNodes []string
 	for _, node := range nodes.Items {
-		if node.Name != myNode && node.Name != tillerNodeName {
+		if node.Name != myNode {
 			filterNodes = append(filterNodes, node.Name)
 		}
 	}
