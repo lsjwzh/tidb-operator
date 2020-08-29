@@ -54,6 +54,6 @@ resource "helm_release" "tidb-operator" {
 
   set {
     name = "scheduler.kubeSchedulerImageName"
-    value = "ii5f236k.mirror.aliyuncs.com/mesosphere/kube-scheduler-amd64:v1.17.8_d2iq.2"
+    value = "mesosphere/kube-scheduler-amd64:v1.17.8_d2iq.2"
   }
 }
