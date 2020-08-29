@@ -10,7 +10,6 @@ provider "helm" {
   alias    = "eks"
   insecure = true
   # service_account = "tiller"
-  install_tiller = false # currently this doesn't work, so we install tiller in the local-exec provisioner. See https://github.com/terraform-providers/terraform-provider-helm/issues/148
   kubernetes {
     config_path = local_file.kubeconfig.filename
   }

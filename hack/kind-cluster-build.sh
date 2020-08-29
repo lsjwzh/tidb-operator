@@ -236,9 +236,9 @@ $KUBECTL_BIN apply -f ${registryFile}
 
 echo "init tidb-operator env"
 $KUBECTL_BIN apply -f ${ROOT}/manifests/local-dind/local-volume-provisioner.yaml
-$KUBECTL_BIN apply -f ${ROOT}/manifests/tiller-rbac.yaml
+#$KUBECTL_BIN apply -f ${ROOT}/manifests/tiller-rbac.yaml
 $KUBECTL_BIN apply -f ${ROOT}/manifests/crd.yaml
-$HELM_BIN init --service-account=tiller --wait
+#$HELM_BIN init --service-account=tiller --wait
 
 echo "############# success create cluster:[${clusterName}] #############"
 

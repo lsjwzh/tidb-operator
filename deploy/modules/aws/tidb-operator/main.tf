@@ -53,7 +53,6 @@ provider "helm" {
   alias = "initial"
   insecure = true
   # service_account = "tiller"
-  install_tiller = false # currently this doesn't work, so we install tiller in the local-exec provisioner. See https://github.com/terraform-providers/terraform-provider-helm/issues/148
   kubernetes {
     config_path = local.kubeconfig
     # used to delay helm provisioner initialization in apply phrase
@@ -69,14 +68,8 @@ resource "null_resource" "setup-env" {
     command = <<EOS
 echo "${local_file.kubeconfig.sensitive_content}" > kube_config.yaml
 kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/${var.operator_version}/manifests/crd.yaml
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/${var.operator_version}/manifests/tiller-rbac.yaml
 kubectl apply -f ${path.module}/manifests/local-volume-provisioner.yaml
 kubectl apply -f ${path.module}/manifests/gp2-storageclass.yaml
-helm init --service-account tiller --upgrade --wait
-until helm ls; do
-  echo "Wait tiller ready"
-  sleep 5
-done
 rm kube_config.yaml
 EOS
     environment = {

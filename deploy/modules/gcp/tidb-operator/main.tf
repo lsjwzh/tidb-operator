@@ -68,7 +68,6 @@ provider "helm" {
   alias    = "initial"
   insecure = true
   # service_account = "tiller"
-  install_tiller = false # currently this doesn't work, so we install tiller in the local-exec provisioner. See https://github.com/terraform-providers/terraform-provider-helm/issues/148
   kubernetes {
     # helm provider loads the file when it's initialized, we must wait for it to be created.
     # However we cannot use resource here, because in refresh phrase, it will
@@ -99,20 +98,10 @@ if ! kubectl get clusterrolebinding cluster-admin-binding 2>/dev/null; then
   kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-admin --user $(gcloud config get-value account)
 fi
 
-if ! kubectl get serviceaccount -n kube-system tiller 2>/dev/null ; then
-  kubectl create serviceaccount --namespace kube-system tiller
-fi
-
 kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/${var.tidb_operator_version}/manifests/crd.yaml
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/${var.tidb_operator_version}/manifests/tiller-rbac.yaml
 kubectl apply -k manifests/local-ssd
 kubectl apply -f manifests/gke/persistent-disk.yaml
 
-helm init --service-account tiller --upgrade --wait
-until helm ls; do
-  echo "Wait until tiller is ready"
-  sleep 5
-done
 EOS
 
 

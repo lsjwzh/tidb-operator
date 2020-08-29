@@ -59,7 +59,6 @@ module "bastion" {
 provider "helm" {
   alias          = "default"
   insecure       = true
-  install_tiller = false
   kubernetes {
     config_path = module.tidb-operator.kubeconfig_filename
   }

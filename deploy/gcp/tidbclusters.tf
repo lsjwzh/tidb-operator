@@ -1,7 +1,6 @@
 provider "helm" {
   alias          = "gke"
   insecure       = true
-  install_tiller = false
   kubernetes {
     # helm provider loads the file when it's initialized, we must wait for it to be created.
     # However we cannot use resource here, because in refresh phrase, it will

@@ -9,7 +9,6 @@ data "template_file" "kubeconfig_filename" {
 provider "helm" {
   alias          = "initial"
   insecure       = true
-  install_tiller = false
   kubernetes {
     config_path = data.template_file.kubeconfig_filename.rendered
   }
